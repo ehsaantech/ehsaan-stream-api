@@ -1,0 +1,247 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.130"
+        }
+      },
+      "EhsaanStreamApiStack": {
+        "id": "EhsaanStreamApiStack",
+        "path": "EhsaanStreamApiStack",
+        "children": {
+          "ehsaan-stream-api-audio-bucket": {
+            "id": "ehsaan-stream-api-audio-bucket",
+            "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": "ehsaan-stream-api-audio-bucket",
+                    "ownershipControls": {
+                      "rules": [
+                        {
+                          "objectOwnership": "BucketOwnerEnforced"
+                        }
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "ignorePublicAcls": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.45.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "ehsaanstreamapiaudiobucketD1E768F3"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "ehsaanstreamapiaudiobucketoai3BF2A3DD",
+                                    "S3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "ehsaanstreamapiaudiobucketD1E768F3",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.45.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.45.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.45.0"
+            }
+          },
+          "ehsaan-stream-api-audio-bucket-oai": {
+            "id": "ehsaan-stream-api-audio-bucket-oai",
+            "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket-oai",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EhsaanStreamApiStack/ehsaan-stream-api-audio-bucket-oai/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                  "aws:cdk:cloudformation:props": {
+                    "cloudFrontOriginAccessIdentityConfig": {
+                      "comment": "oai for ehsaan-stream-audio-bucket-api"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                  "version": "2.45.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+              "version": "2.45.0"
+            }
+          },
+          "cloudfront-distribution-ehsaan-stream-api-audio-bucket": {
+            "id": "cloudfront-distribution-ehsaan-stream-api-audio-bucket",
+            "path": "EhsaanStreamApiStack/cloudfront-distribution-ehsaan-stream-api-audio-bucket",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "EhsaanStreamApiStack/cloudfront-distribution-ehsaan-stream-api-audio-bucket/Origin1",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.1.130"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "EhsaanStreamApiStack/cloudfront-distribution-ehsaan-stream-api-audio-bucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "ehsaanstreamapiaudiobucketD1E768F3",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "id": "EhsaanStreamApiStackcloudfrontdistributionehsaanstreamapiaudiobucketOrigin15FAACAE0",
+                          "s3OriginConfig": {
+                            "originAccessIdentity": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "origin-access-identity/cloudfront/",
+                                  {
+                                    "Ref": "ehsaanstreamapiaudiobucketoai3BF2A3DD"
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "EhsaanStreamApiStackcloudfrontdistributionehsaanstreamapiaudiobucketOrigin15FAACAE0",
+                        "allowedMethods": [
+                          "GET",
+                          "HEAD",
+                          "OPTIONS"
+                        ],
+                        "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                        "compress": true,
+                        "viewerProtocolPolicy": "redirect-to-https"
+                      },
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.45.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.45.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "EhsaanStreamApiStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "EhsaanStreamApiStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.45.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "EhsaanStreamApiStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.45.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.130"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.45.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.45.0"
+    }
+  }
+}
