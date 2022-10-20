@@ -1,5 +1,5 @@
+import { Channel } from 'src/entities/channel.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Scholar } from '../../scholars/entities/scholar.entity';
 
 @Entity()
 export class Track {
@@ -12,8 +12,8 @@ export class Track {
   @Column()
   src: string;
 
-  @ManyToOne(() => Scholar, (scholar) => scholar.tracks)
-  scholar: Scholar;
+  @ManyToOne(() => Channel, (channel) => channel.tracks)
+  channel: Channel;
 
   @Column({ default: true })
   isActive: boolean;
