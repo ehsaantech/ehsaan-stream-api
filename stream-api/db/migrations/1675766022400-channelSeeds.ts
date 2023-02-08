@@ -1,13 +1,19 @@
 import { Channel } from 'src/entities/channel.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class SeedChannels1666260997197 implements MigrationInterface {
+export class channelSeeds1675766022400 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const channels = [
       {
         name: 'Mufti Tariq Masood',
         thumbnail:
           'https://ehsaan-stream.web.app/static/media/MuftiTM.a054405422c490efe350.jpg',
+        description: 'test',
+      },
+      {
+        name: 'Mufti Taqi Usmani',
+        thumbnail:
+          'https://ehsaan-stream.web.app/static/media/mtu.5fe7b7f242a41174c876.png',
         description: 'test',
       },
       {
@@ -44,6 +50,13 @@ export class SeedChannels1666260997197 implements MigrationInterface {
         name: 'Zakir Naik',
         thumbnail:
           'https://ehsaan-stream.web.app/static/media/ZN.a623f8954e10194df55b.png',
+        description: 'test',
+      },
+      {
+        name: 'Khanqah-e-Imdadia Ashrafia',
+        thumbnail:
+          'https://ehsaan-stream.web.app/static/media/khanqah.795f0b857dc3e97266a7.png',
+          
         description: 'test',
       },
     ];

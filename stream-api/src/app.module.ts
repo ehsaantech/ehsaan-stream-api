@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChannelsModule } from './repository/channels.module';
-import { dataSourceOptions } from './database/data-source';
+import { dataSourceOptions } from '../db/data-source';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions), ChannelsModule],

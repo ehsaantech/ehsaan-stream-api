@@ -1,9 +1,9 @@
 import { Channel } from 'src/entities/channel.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 
-@Entity()
+@Entity('tracks')
 export class Track {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
@@ -12,9 +12,14 @@ export class Track {
   @Column()
   src: string;
 
-  @ManyToOne(() => Channel, (channel) => channel.tracks)
-  channel: Channel;
+  @ManyToOne(() => Channel, (channel) => channel.tracks, { nullable: false })
+  @JoinColumn({
+    name: 'channelId',
+    referencedColumnName: 'id',
+  })
+  public channel: Channel;
 
   @Column({ default: true })
   isActive: boolean;
 }
+ 

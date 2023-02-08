@@ -8,9 +8,9 @@ import {
   OneToOne,
 } from 'typeorm';
 
-@Entity()
+@Entity('channel')
 export class Channel {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
