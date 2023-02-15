@@ -79,7 +79,7 @@ export class createTables1675765917554 implements MigrationInterface {
                 {
                   name: 'channelId',
                   type: 'int',
-                  isNullable: false,
+                  isNullable: true,
                
                 },      
               ],

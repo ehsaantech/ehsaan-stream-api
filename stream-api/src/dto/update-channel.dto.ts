@@ -4,4 +4,5 @@ import { CreateChannelDto } from './create-channel.dto';
 export class UpdateChannelDto extends PartialType(CreateChannelDto) {
   name?: string;
   thumbnail: string;
+  description:string;
 }

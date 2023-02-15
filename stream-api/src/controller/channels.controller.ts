@@ -8,6 +8,9 @@ import {
   Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
+  ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ChannelsService } from '../service/channels.service';
 import { CreateChannelDto } from '../dto/create-channel.dto';
@@ -21,6 +24,7 @@ export class ChannelsController {
   constructor(private readonly channelsService: ChannelsService) {}
 
   @Post()
+  @UsePipes(ValidationPipe)
   create(@Body() createChannelDto: CreateChannelDto) {
     return this.channelsService.create(createChannelDto);
   }
@@ -30,35 +34,36 @@ export class ChannelsController {
     return this.channelsService.findAllChannels();
   }
 
+  @Get('/tracks')
+  findAlltracks() {
+      return this.channelsService.getAllTracks();
+  } 
+
   @Get(':id')
-  findChannelByID(@Param('id') id: string) {
-    return this.channelsService.findChannelByID(+id);
+  findChannelByID(@Param('id',ParseIntPipe) id: number) {
+    return this.channelsService.findChannelByID(id);
   }
 
   @Patch(':id')
   updateChannel(
-    @Param('id') id: string,
+    @Param('id',ParseIntPipe) id: number,
     @Body() updateChannelDto: UpdateChannelDto,
   ) {
-    return this.channelsService.updateChannel(+id, updateChannelDto);
+    return this.channelsService.updateChannel(id, updateChannelDto);
   }
 
   @Delete(':id')
-  removeChannel(@Param('id') id: string) {
-    return this.channelsService.removeChannel(+id);
+  removeChannel(@Param('id',ParseIntPipe) id: number) {
+    return this.channelsService.removeChannel(id);
   }
 
   @Post(':id/tracks')
+  @UsePipes(ValidationPipe)
   createChannelTracks(
-    @Param('id') id: string,
+    @Param('id',ParseIntPipe) id: number,
     @Body() createTrackDto: CreateTrackDto,
   ) {
-    return this.channelsService.createChannelTracks(+id, createTrackDto);
-  }
-
-  @Get('/tracks')
-  findAlltracks() {
-    return this.channelsService.getAllTracks();
+    return this.channelsService.createChannelTracks(id, createTrackDto);
   }
 
   @Get('/tracks/:id')
@@ -70,7 +75,7 @@ export class ChannelsController {
   updatetrack(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
     return this.channelsService.updateTrack(+id, updateTrackDto);
   }
-
+  
   @Delete('/tracks/:id')
   removeTrack(@Param(':id') id: string) {
     return this.channelsService.removeTrack(+id);

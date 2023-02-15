@@ -19,6 +19,9 @@ export class Track {
   })
   public channel: Channel;
 
+  @Column()
+  channelId: number;
+  
   @Column({ default: true })
   isActive: boolean;
 }

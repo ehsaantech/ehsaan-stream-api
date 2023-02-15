@@ -25,11 +25,15 @@ export class ChannelsService {
     return findChannels;
   }
 
-  findChannelByID(id: number) {
-    return this.channelRepository.findOne({
+  async findChannelByID(id: number) {
+    const channels = await this.channelRepository.findOne({
       relations: { tracks: true },
       where: { id },
     });
+    if(!channels){
+      throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
+    }
+    return channels;
   }
 
   async updateChannel(id: number, updateChannelDto: UpdateChannelDto) {
@@ -39,6 +43,9 @@ export class ChannelsService {
 
   async removeChannel(id: number) {
     const channel = await this.findChannelByID(id);
+    if(!channel){
+      throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
+    }
     return this.channelRepository.remove(channel);
   }
 
@@ -57,14 +64,18 @@ export class ChannelsService {
   }
 
   getAllTracks() {
-    return this.trackRepository.find({ relations: ['channel'] });
+    return this.trackRepository.find();
   }
 
-  findTrackByID(id: number) {
-    return this.trackRepository.findOne({
+  async findTrackByID(id: number) {
+    const tracks =  await this.trackRepository.findOne({
       relations: { channel: true },
       where: { id },
     });
+    if(!tracks){
+      throw new HttpException("No track was found", HttpStatus.BAD_REQUEST);
+    }
+    return tracks;
   }
 
   async updateTrack(id: number, updateTrackDto: UpdateTrackDto) {
