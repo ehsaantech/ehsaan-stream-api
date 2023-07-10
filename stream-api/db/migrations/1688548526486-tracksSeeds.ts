@@ -1,64 +1,54 @@
-
 import { Channel } from 'src/entities/channel.entity';
 import { Track } from 'src/entities/track.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class tracksSeeds1675766031182 implements MigrationInterface {
+export class tracksSeeds1688548526486 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
 
-    const channelDrIsrar = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'DR. Israr Ahmed'})
-    .getOne();
-    console.log(channelDrIsrar.id);
+      const channelDrIsrar = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'DR. Israr Ahmed'})
+      .getOne();
 
-    const channelDrZakirNayak = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Zakir Naik'})
-    .getOne();
-    console.log(channelDrZakirNayak.id);
+      const channelDrZakirNayak = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Zakir Naik'})
+      .getOne();
 
-    const channelJunaidJamshed = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Junaid Jamshed'})
-    .getOne();
-    console.log(channelJunaidJamshed.id);
+      const channelJunaidJamshed = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Junaid Jamshed'})
+      .getOne();
 
-    const channelKhanqah = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Khanqah-e-Imdadia Ashrafia'})
-    .getOne();
-    console.log(channelKhanqah.id);
+      const channelKhanqah = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Khanqah-e-Imdadia Ashrafia'})
+      .getOne();
 
-    const channelMoulanaIbadullah = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Moulana Ibadullah'})
-    .getOne();
-    console.log(channelMoulanaIbadullah.id);
+      const channelMoulanaIbadullah = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Moulana Ibadullah'})
+      .getOne();
 
-    const channelMoulanaTariqJameel = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Moulana Tariq Jameel'})
-    .getOne();
-    console.log(channelMoulanaTariqJameel.id);
+      const channelMoulanaTariqJameel = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Moulana Tariq Jameel'})
+      .getOne();
 
-    const channelMuftiMenk = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Mufti Menk'})
-    .getOne();
-    console.log(channelMuftiMenk.id);
+      const channelMuftiMenk = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Mufti Menk'})
+      .getOne();
 
-    const channelTaqiUsmani = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Mufti Taqi Usmani'})
-    .getOne();
-    console.log(channelTaqiUsmani.id);
+      const channelTaqiUsmani = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Mufti Taqi Usmani'})
+      .getOne();
 
-    const channelTariqMasood = await queryRunner.manager
-    .createQueryBuilder(Channel, 'channel')
-    .where( {name:'Mufti Tariq Masood'})
-    .getOne();
-    console.log(channelTariqMasood.id);
+      const channelTariqMasood = await queryRunner.manager
+      .createQueryBuilder(Channel, 'channel')
+      .where( {englishName:'Mufti Tariq Masood'})
+      .getOne();
 
       const tracks = [
             {
@@ -129,7 +119,7 @@ export class tracksSeeds1675766031182 implements MigrationInterface {
               channelId:channelDrIsrar.id,
             },
             {
-              name: 'amaz Mai dil Q nhi lagta',
+              name: 'Namaz Mai dil Q nhi lagta',
               src:
                 'https://d3aw1qwnchob5o.cloudfront.net/dr-israr-ahmed/Namaz Mai dil Q nhi lagta.mp3',
               channelId:channelDrIsrar.id,
@@ -413,22 +403,6 @@ export class tracksSeeds1675766031182 implements MigrationInterface {
                 'https://d3aw1qwnchob5o.cloudfront.net/molana-Ibadullah/3 person in the responsibility of Allah.mp3',
               channelId:channelMoulanaIbadullah.id,
             },
-           
-           
-            // {
-            //   name: 'ALLAH Ki Madad Kab Milegi?',
-            //   src:
-            //     'https://d3aw1qwnchob5o.cloudfront.net/molana-Ibadullah/ALLAH Ki Madad Kab Milegi?.mp3',
-            //   channelId:channelMoulanaIbadullah.id,
-            // },
-            // {
-            //   name: 'Aqalmand Kon Hai?',
-            //   src:
-            //     'https://d3aw1qwnchob5o.cloudfront.net/molana-Ibadullah/Aqalmand Kon Hai?.mp3',
-            //   channelId:channelMoulanaIbadullah.id,
-            // },
-
-
             {
               name: 'Azaan Me 6 Paigaam Hen',
               src:
@@ -808,11 +782,8 @@ export class tracksSeeds1675766031182 implements MigrationInterface {
               src:
                 'https://d3aw1qwnchob5o.cloudfront.net/mufti-tariq-masood/Success ka Formula.mp3',
               channelId:channelTariqMasood.id,
-            },
-
-            
+            },      
           ];
-          console.log(tracks);
           
           await queryRunner.manager
             .createQueryBuilder()
@@ -823,9 +794,6 @@ export class tracksSeeds1675766031182 implements MigrationInterface {
 
     }
     
-    
-  
-
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DELETE FROM tracks`);
   }
