@@ -20,9 +20,9 @@ import { CreateChannelDto } from '../dto/create-channel.dto';
 import { CreateTrackDto } from '../dto/create-track.dto';
 import { UpdateChannelDto } from '../dto/update-channel.dto';
 import { UpdateTrackDto } from 'src/dto/update-track.dto';
-import { ThumbnailFileUploadInterceptor } from 'interceptors/thumbnail-file-upload.interceptor';
+import { ThumbnailFileUploadInterceptor } from 'src/interceptors/thumbnail-file-upload.interceptor';
 import { createReadStream } from 'fs';
-import { TracksFileUploadInterceptor } from 'interceptors/tracks-file-upload.interceptor';
+import { TracksFileUploadInterceptor } from 'src/interceptors/tracks-file-upload.interceptor';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('api/v1/channels')
