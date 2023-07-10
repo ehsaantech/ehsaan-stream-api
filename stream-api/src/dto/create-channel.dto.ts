@@ -1,13 +1,7 @@
-import { IsNotEmpty, IsUrl } from "class-validator";
-
 export class CreateChannelDto {
-  @IsNotEmpty()
-  name: string;
-  
-  @IsNotEmpty()
-  @IsUrl(undefined, { message: 'thumbnail is not valid.' })
+  englishName: string;
+  arabicName: string;
+  channelRoute: string;  
   thumbnail: string;
-
-  @IsNotEmpty()
   description: string;
 }

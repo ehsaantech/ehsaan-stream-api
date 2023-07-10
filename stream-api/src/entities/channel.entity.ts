@@ -3,9 +3,7 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  JoinColumn,
   OneToMany,
-  OneToOne,
 } from 'typeorm';
 
 @Entity('channel')
@@ -14,7 +12,13 @@ export class Channel {
   id: number;
 
   @Column()
-  name: string;
+  englishName: string;
+  
+  @Column()
+  arabicName: string;
+
+  @Column({unique:true})
+  channelRoute: string;
 
   @Column()
   thumbnail: string;
@@ -22,7 +26,7 @@ export class Channel {
   @Column()
   description: string;
 
-  @OneToMany(() => Track, (tracks) => tracks.channel)
+  @OneToMany(() => Track, (tracks) => tracks.channel,{ onDelete: 'CASCADE' })
   tracks: Track;
 
   @Column({ default: true })

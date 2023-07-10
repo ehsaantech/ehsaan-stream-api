@@ -1,4 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { join } from 'path';
+import { statSync } from 'fs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Track } from '../entities/track.entity';
 import { CreateTrackParams } from 'src/utils/types';
@@ -14,21 +16,53 @@ export class ChannelsService {
     @InjectRepository(Channel) private channelRepository: Repository<Channel>,
     @InjectRepository(Track) private trackRepository: Repository<Track>,
   ) {}
+
   async create(createChannelDto: CreateChannelDto) {
+    const channelRoute = createChannelDto.channelRoute;
+
+    const existingChannel = await this.channelRepository.findOne({
+      where: { channelRoute } 
+    });
+
+    if (existingChannel) {
+      throw new HttpException('This channel already exists', HttpStatus.BAD_REQUEST);
+    }
+    
     const newChannel = this.channelRepository.create(createChannelDto);
     await this.channelRepository.save(newChannel);
     return newChannel;
   }
 
   async findAllChannels() {
-    const findChannels = await this.channelRepository.find({ take: 10 }); // SELECT * from channel
-    return findChannels;
+    const findChannels = await this.channelRepository.find({ take: 10 });
+    return findChannels;    
   }
 
-  async findChannelByID(id: number) {
+  async getThumbnail(channelRoute: string): Promise<string> {
+    const channel = await this.channelRepository.findOne(
+      {
+        select:{ thumbnail:true },
+        where:{ channelRoute }
+      });
+  
+    if (!channel) {
+      throw new HttpException('Thumbnail not found', HttpStatus.BAD_REQUEST);
+    }
+  
+    const filePath = join(process.cwd(), 'uploads/thumbnails', channel.thumbnail);
+    const fileStats = statSync(filePath);
+  
+    if (!fileStats.isFile()) {
+      throw new NotFoundException('File not found');
+    }
+  
+    return filePath;
+  }
+
+  async findChannelByRoute(channelRoute: string) {
     const channels = await this.channelRepository.findOne({
       relations: { tracks: true },
-      where: { id },
+      where: { channelRoute },
     });
     if(!channels){
       throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
@@ -36,30 +70,38 @@ export class ChannelsService {
     return channels;
   }
 
-  async updateChannel(id: number, updateChannelDto: UpdateChannelDto) {
-    const channels = await this.findChannelByID(id);
+  async updateChannel(channelRoute: string, updateChannelDto: UpdateChannelDto) {
+    const channels = await this.findChannelByRoute(channelRoute);
     return this.channelRepository.save({ ...channels, ...updateChannelDto });
   }
 
-  async removeChannel(id: number) {
-    const channel = await this.findChannelByID(id);
+  async removeChannel(channelRoute: string) {
+    const channel = await this.findChannelByRoute(channelRoute);
+
     if(!channel){
       throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
     }
-    return this.channelRepository.remove(channel);
+    const deleteChannel = await this.channelRepository.remove(channel);
+    
+    return "Channel deleted successfully!"
   }
 
-  async createChannelTracks(id: number, createTracks: CreateTrackParams) {
-    const channel = await this.channelRepository.findOneBy({ id });
+  async createChannelTracks(channelRoute: string, createTracks: CreateTrackParams) {
+    const channel = await this.channelRepository.findOneBy({ channelRoute });
+     
     if (!channel)
       throw new HttpException(
         'Channel not found. Cannot create Tracks',
         HttpStatus.BAD_REQUEST,
       );
+          
+    const channelId = channel.id;
+  
     const newTrack = this.trackRepository.create({
       ...createTracks,
-      channel,
+      channelId
     });
+    
     return this.trackRepository.save(newTrack);
   }
 
@@ -67,7 +109,33 @@ export class ChannelsService {
     return this.trackRepository.find();
   }
 
-  async findTrackByID(id: number) {
+  async playTracks( channelRoute: string, id: number ): Promise<string> {
+
+    const channel = await this.channelRepository.findOne({ where: { channelRoute } });
+
+    if (!channel) {
+      throw new NotFoundException('Channel not found');
+    }
+
+    const tracks = await this.trackRepository.findOne(
+      { where: { id } });
+  
+    if (!tracks) {
+      throw new HttpException('No track was found', HttpStatus.BAD_REQUEST);
+    }
+  
+    const filePath = join(process.cwd(), 'uploads/tracks', tracks.src);
+    
+    const fileStats = statSync(filePath);
+  
+    if (!fileStats.isFile()) {
+      throw new NotFoundException('File not found');
+    }
+  
+    return filePath;
+  }
+
+  async findTrackByID(id: number) {    
     const tracks =  await this.trackRepository.findOne({
       relations: { channel: true },
       where: { id },
@@ -84,7 +152,9 @@ export class ChannelsService {
   }
 
   async removeTrack(id: number) {
-    const tracks = await this.findTrackByID(id);
-    return this.trackRepository.remove(tracks);
+    const tracks = await this.findTrackByID(id);    
+    const deleteTracks = await this.trackRepository.remove(tracks);
+    return "Track deleted successfully"
   }
+
 }
