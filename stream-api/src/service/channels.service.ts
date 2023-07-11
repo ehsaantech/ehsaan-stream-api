@@ -18,10 +18,10 @@ export class ChannelsService {
   ) {}
 
   async create(createChannelDto: CreateChannelDto) {
-    const channelRoute = createChannelDto.channelRoute;
+    const routeKey = createChannelDto.routeKey;
 
     const existingChannel = await this.channelRepository.findOne({
-      where: { channelRoute } 
+      where: { routeKey } 
     });
 
     if (existingChannel) {
@@ -38,18 +38,18 @@ export class ChannelsService {
     return findChannels;    
   }
 
-  async getThumbnail(channelRoute: string): Promise<string> {
+  async getThumbnail(routeKey: string): Promise<string> {
     const channel = await this.channelRepository.findOne(
       {
-        select:{ thumbnail:true },
-        where:{ channelRoute }
+        select:{ thumbnailkey:true },
+        where:{ routeKey }
       });
   
     if (!channel) {
       throw new HttpException('Thumbnail not found', HttpStatus.BAD_REQUEST);
     }
   
-    const filePath = join(process.cwd(), 'uploads/thumbnails', channel.thumbnail);
+    const filePath = join(process.cwd(), 'uploads/thumbnails', channel.thumbnailkey);
     const fileStats = statSync(filePath);
   
     if (!fileStats.isFile()) {
@@ -59,10 +59,10 @@ export class ChannelsService {
     return filePath;
   }
 
-  async findChannelByRoute(channelRoute: string) {
+  async findChannelByRoute(routeKey: string) {
     const channels = await this.channelRepository.findOne({
       relations: { tracks: true },
-      where: { channelRoute },
+      where: { routeKey },
     });
     if(!channels){
       throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
@@ -70,13 +70,13 @@ export class ChannelsService {
     return channels;
   }
 
-  async updateChannel(channelRoute: string, updateChannelDto: UpdateChannelDto) {
-    const channels = await this.findChannelByRoute(channelRoute);
+  async updateChannel(routeKey: string, updateChannelDto: UpdateChannelDto) {
+    const channels = await this.findChannelByRoute(routeKey);
     return this.channelRepository.save({ ...channels, ...updateChannelDto });
   }
 
-  async removeChannel(channelRoute: string) {
-    const channel = await this.findChannelByRoute(channelRoute);
+  async removeChannel(routeKey: string) {
+    const channel = await this.findChannelByRoute(routeKey);
 
     if(!channel){
       throw new HttpException("No channel found", HttpStatus.BAD_REQUEST);
@@ -86,8 +86,8 @@ export class ChannelsService {
     return "Channel deleted successfully!"
   }
 
-  async createChannelTracks(channelRoute: string, createTracks: CreateTrackParams) {
-    const channel = await this.channelRepository.findOneBy({ channelRoute });
+  async createChannelTracks(routeKey: string, createTracks: CreateTrackParams) {
+    const channel = await this.channelRepository.findOneBy({ routeKey });
      
     if (!channel)
       throw new HttpException(
@@ -109,9 +109,9 @@ export class ChannelsService {
     return this.trackRepository.find();
   }
 
-  async playTracks( channelRoute: string, id: number ): Promise<string> {
+  async playTracks( routeKey: string, id: number ): Promise<string> {
 
-    const channel = await this.channelRepository.findOne({ where: { channelRoute } });
+    const channel = await this.channelRepository.findOne({ where: { routeKey } });
 
     if (!channel) {
       throw new NotFoundException('Channel not found');
@@ -124,7 +124,7 @@ export class ChannelsService {
       throw new HttpException('No track was found', HttpStatus.BAD_REQUEST);
     }
   
-    const filePath = join(process.cwd(), 'uploads/tracks', tracks.src);
+    const filePath = join(process.cwd(), 'uploads/tracks', tracks.srcKey);
     
     const fileStats = statSync(filePath);
   

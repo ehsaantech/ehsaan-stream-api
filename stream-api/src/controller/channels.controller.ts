@@ -35,7 +35,7 @@ export class ChannelsController {
     @UploadedFile() file,
     @Body() createChannelDto: CreateChannelDto,
   ){
-    createChannelDto.thumbnail = file.filename
+    createChannelDto.thumbnailkey = file.filename
     const savedChannel = await this.channelsService.create(createChannelDto);
     return savedChannel;  
   }
@@ -45,10 +45,10 @@ export class ChannelsController {
     return this.channelsService.findAllChannels();
   }
 
-  @Get('/thumbnails/:channelRoute')
-  async findChannelThumbnail(@Param('channelRoute') channelRoute: string, @Res() res: Response) {
+  @Get('/thumbnails/:routeKey')
+  async findChannelThumbnail(@Param('routeKey') routeKey: string, @Res() res: Response) {
     try {
-      const filePath = await this.channelsService.getThumbnail(channelRoute);
+      const filePath = await this.channelsService.getThumbnail(routeKey);
       res.setHeader('Content-Type', 'image/jpeg');
       createReadStream(filePath).pipe(res);
     } catch (error) {
@@ -56,33 +56,33 @@ export class ChannelsController {
     }
   }
 
-  @Get(':channelRoute')
-  findChannelByID(@Param('channelRoute') channelRoute: string) {
-    return this.channelsService.findChannelByRoute(channelRoute);
+  @Get(':routeKey')
+  findChannelByID(@Param('routeKey') routeKey: string) {
+    return this.channelsService.findChannelByRoute(routeKey);
   }
 
-  @Patch(':channelRoute')
+  @Patch(':routeKey')
   updateChannel(
-    @Param('channelRoute') channelRoute: string,
+    @Param('routeKey') routeKey: string,
     @Body() updateChannelDto: UpdateChannelDto,
   ) {
-    return this.channelsService.updateChannel(channelRoute, updateChannelDto);
+    return this.channelsService.updateChannel(routeKey, updateChannelDto);
   }
 
-  @Delete(':channelRoute')
-  removeChannel(@Param('channelRoute') channelRoute: string) {
-    return this.channelsService.removeChannel(channelRoute);
+  @Delete(':routeKey')
+  removeChannel(@Param('routeKey') routeKey: string) {
+    return this.channelsService.removeChannel(routeKey);
   }
 
-  @Post(':channelRoute/tracks')
+  @Post(':routeKey/tracks')
   @UseInterceptors(TracksFileUploadInterceptor)
   async createChannelTracks(
-    @Param('channelRoute') channelRoute: string,
+    @Param('routeKey') routeKey: string,
     @UploadedFile() file,
     @Body() createTrackDto: CreateTrackDto,
   ) {
-    createTrackDto.src = file.filename
-    return await this.channelsService.createChannelTracks(channelRoute, createTrackDto);
+    createTrackDto.srcKey = file.filename
+    return await this.channelsService.createChannelTracks(routeKey, createTrackDto);
   }
 
   @Get('/tracks/list')
@@ -90,13 +90,13 @@ export class ChannelsController {
       return this.channelsService.getAllTracks();
   } 
 
-  @Get(':channelRoute/tracks/:id')
+  @Get(':routeKey/tracks/:id')
   async playChannelTracks(
-    @Param('channelRoute') channelRoute: string,
+    @Param('routeKey') routeKey: string,
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response) {
     try {
-      const filePath = await this.channelsService.playTracks(channelRoute,  id);
+      const filePath = await this.channelsService.playTracks(routeKey,  id);
       res.setHeader('Content-Type', 'audio/*');
       createReadStream(filePath).pipe(res);
     } catch (error) {

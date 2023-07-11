@@ -10,7 +10,7 @@ export class Track {
   name: string;
 
   @Column()
-  src: string;
+  srcKey: string;
 
   @ManyToOne(() => Channel, (channel) => channel.tracks, { onDelete: 'CASCADE' })
   @JoinColumn({

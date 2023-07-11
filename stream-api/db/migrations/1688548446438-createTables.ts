@@ -30,13 +30,13 @@ export class createTables1688548446438 implements MigrationInterface {
                   length: '255',
                 },
                 {
-                  name: 'channelRoute',
+                  name: 'routeKey',
                   type: 'varchar',
                   isNullable: false,
                   length: '255',
                 },
                 {
-                  name: 'thumbnail',
+                  name: 'thumbnailkey',
                   type: 'varchar',
                   isNullable: false,
                   length: '255',
@@ -77,7 +77,7 @@ export class createTables1688548446438 implements MigrationInterface {
                   length: '500',
                 },
                 {
-                  name: 'src',
+                  name: 'srcKey',
                   type: 'varchar',
                   isNullable: false,
                   length: '500',

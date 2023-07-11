@@ -3,7 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
 @Injectable()
-export class TracksFileUploadInterceptor extends FileInterceptor('src', {
+export class TracksFileUploadInterceptor extends FileInterceptor('srcKey', {
   storage: diskStorage({
     destination: 'uploads/tracks',
     filename: (req, file, cb) => {

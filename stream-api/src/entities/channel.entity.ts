@@ -18,10 +18,10 @@ export class Channel {
   arabicName: string;
 
   @Column({unique:true})
-  channelRoute: string;
+  routeKey: string;
 
   @Column()
-  thumbnail: string;
+  thumbnailkey: string;
 
   @Column()
   description: string;
