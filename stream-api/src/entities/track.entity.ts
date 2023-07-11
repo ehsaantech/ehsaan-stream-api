@@ -17,7 +17,7 @@ export class Track {
     name: 'channelId',
     referencedColumnName: 'id',
   })
-  public channel: Channel;
+  channel: Channel;
 
   @Column()
   channelId: number;
