@@ -11,7 +11,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 4000
+EXPOSE 3000
 
-ENTRYPOINT [ "./entrypoint.sh" ]
 CMD ["npm", "run", "start"]
