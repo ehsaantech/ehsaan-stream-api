@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    container_name: ehsaan-stream-api
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+      - 9228:9228
+    depends_on:
+      - db
+    volumes:
+      - './src/:/app/src'
+      - './db/:/app/db'
+    networks:
+      - ehsaan-stream
+
+  db:
+    image: mysql:5.7
+    container_name: ehsaan-stream-db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    ports:
+      - 3306:3306
+    volumes:
+      - ehsaan-stream-db:/var/lib/mysql
+    networks:
+      - ehsaan-stream
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --character-set-client-handshake=FALSE #Set utf8mb4
+
+  # agent:
+  #   container_name: newrelic-infra
+  #   image: newrelic/infrastructure:latest
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   network_mode: host
+  #   pid: host
+  #   privileged: true
+  #   volumes:
+  #     - '/:/host:ro'
+  #     - '/var/run/docker.sock:/var/run/docker.sock'
+  #   env_file:
+  #     - conf/development
+  #     - conf/development.secret
+  #   restart: unless-stopped
+
+volumes:
+  ehsaan-stream-db: ~
+
+networks:
+  ehsaan-stream:
+    name: ehsaan-stream-api
