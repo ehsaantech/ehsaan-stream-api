@@ -41,7 +41,7 @@ export class ChannelsService {
   async getThumbnail(routeKey: string): Promise<string> {
     const channel = await this.channelRepository.findOne(
       {
-        select:{ thumbnailkey:true },
+        select:{ thumbnailKey:true },
         where:{ routeKey }
       });
   
@@ -49,7 +49,7 @@ export class ChannelsService {
       throw new HttpException('Thumbnail not found', HttpStatus.BAD_REQUEST);
     }
   
-    const filePath = join(process.cwd(), 'uploads/thumbnails', channel.thumbnailkey);
+    const filePath = join(process.cwd(), 'uploads/thumbnails', channel.thumbnailKey);
     const fileStats = statSync(filePath);
   
     if (!fileStats.isFile()) {

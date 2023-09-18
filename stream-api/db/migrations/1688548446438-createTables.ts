@@ -25,7 +25,6 @@ export class createTables1688548446438 implements MigrationInterface {
                 {
                   name: 'arabicName',
                   type: 'varchar',
-                  // Curently it is empty, will be used in the future
                   isNullable: true,
                   length: '255',
                 },
@@ -36,7 +35,7 @@ export class createTables1688548446438 implements MigrationInterface {
                   length: '255',
                 },
                 {
-                  name: 'thumbnailkey',
+                  name: 'thumbnailKey',
                   type: 'varchar',
                   isNullable: false,
                   length: '255',

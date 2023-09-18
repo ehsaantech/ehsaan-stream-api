@@ -35,7 +35,7 @@ export class ChannelsController {
     @UploadedFile() file,
     @Body() createChannelDto: CreateChannelDto,
   ){
-    createChannelDto.thumbnailkey = file.filename
+    createChannelDto.thumbnailKey = file.filename
     const savedChannel = await this.channelsService.create(createChannelDto);
     return savedChannel;  
   }

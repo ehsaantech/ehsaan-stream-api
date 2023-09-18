@@ -21,7 +21,7 @@ export class Channel {
   routeKey: string;
 
   @Column()
-  thumbnailkey: string;
+  thumbnailKey: string;
 
   @Column()
   description: string;

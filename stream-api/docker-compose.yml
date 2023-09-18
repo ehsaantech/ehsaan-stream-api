@@ -17,6 +17,7 @@ services:
     volumes:
       - './src/:/app/src'
       - './db/:/app/db'
+      - './uploads:/app/uploads'
     networks:
       - ehsaan-stream
 
